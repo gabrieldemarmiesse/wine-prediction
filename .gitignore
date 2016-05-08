@@ -1,0 +1,5 @@
+*.cmd
+.idea/
+.ipynb_checkpoints/
+__pycache__/
+tests_pandas.py
