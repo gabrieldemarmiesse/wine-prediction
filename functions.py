@@ -153,8 +153,8 @@ def naive_bayes_predict(data, table, counts):
     for row in X:
         best_class_and_score = (0,0)
         for key, value in table.items():
-            scores = [gaussian(row[i], value[i][0], value[i][0]) for i in range(11)]
-            score = np.prod(scores) * counts[key]
+            scores = [gaussian(row[i], value[i][0], value[i][1]) for i in range(11)]
+            score = np.prod(scores)
             if score > best_class_and_score[1]:
                 best_class_and_score = (key, score)
 
