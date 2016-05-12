@@ -3,6 +3,7 @@ import matplotlib.pyplot as plt
 import pandas as pd
 from math import *
 
+
 def features_targets(array):
     return array[:, :-1], array[:, -1:]
 
@@ -131,7 +132,7 @@ def naive_bayes_train(data):
         counts[int(quality)] = set.shape[0]
 
         # We create a list of gaussian distributions
-        a=[]
+        a = []
         for i in range(11):
             a.append((means[i], variances[i]))
         gaussians[int(quality)] = a
@@ -139,19 +140,18 @@ def naive_bayes_train(data):
 
 
 def gaussian(x, mean, variance):
-    exponential = exp(-(x-mean)**2/(2*variance))
+    exponential = exp(-(x - mean) ** 2 / (2 * variance))
 
-    result = exponential/(sqrt(variance * 2 * pi))
+    result = exponential / (sqrt(variance * 2 * pi))
 
     return result
-
 
 
 def naive_bayes_predict(data, table, counts):
     X, Y = features_targets(data)
     predictions = []
     for row in X:
-        best_class_and_score = (0,0)
+        best_class_and_score = (0, 0)
         for key, value in table.items():
             scores = [gaussian(row[i], value[i][0], value[i][1]) for i in range(11)]
             score = np.prod(scores)
@@ -162,6 +162,7 @@ def naive_bayes_predict(data, table, counts):
 
     return np.array([prediction[0] for prediction in predictions]).T, Y
 
+
 def pca(data):
     df = pd.DataFrame(data)
     df = df - df.mean()
@@ -170,13 +171,39 @@ def pca(data):
     eigenvalues, eigenvectors = np.linalg.eig(cov_matrix)
     return eigenvalues, eigenvectors
 
+
 def change_space(data, A):
     X, Y = features_targets(data)
     df = pd.DataFrame(X)
     df = df - df.mean()
-    X=df.values
+    X = df.values
     X_new = X.dot(A.T)
-    new_data = np.concatenate((X_new, Y), axis = 1)
+    new_data = np.concatenate((X_new, Y), axis=1)
     return new_data
 
 
+def get_classification_accuracy(predictions, targets):
+    assert len(predictions) == len(targets)
+
+    nb_exact_guesses = 0
+    for prediction, target in zip(predictions, targets):
+        if prediction == target:
+            nb_exact_guesses += 1
+
+    accuracy_percentage = nb_exact_guesses * 100 / len(predictions)
+    return accuracy_percentage
+
+
+def get_confusion_matrix(predictions, targets):
+    l = len(targets)
+    assert len(predictions) == l
+
+    lower = int(min((min(predictions), min(targets))))
+    upper = int(max((max(predictions), max(targets))))
+    nb_classes = upper + 1 - lower
+
+    confusion_matrix = np.zeros((nb_classes, nb_classes))
+    for prediction, target in zip(predictions, targets):
+        confusion_matrix[int(target) - lower, int(prediction)-lower] += 1
+
+    return confusion_matrix

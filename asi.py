@@ -39,6 +39,11 @@ predictions, targets = naive_bayes_predict(test, gaussians, counts)
 
 mse_ = mse(predictions, targets)
 
+accuracy = get_classification_accuracy(predictions, targets)
+
+confusion_matrix = get_confusion_matrix(predictions, targets)
+print(confusion_matrix)
+
 eigenvalues, eigenvectors = pca(train)
 
 yolo = change_space(train, eigenvectors)
