@@ -48,8 +48,8 @@ def variance(values):
     ones = np.array([[1] * size])
     mean = (ones.dot(values) / size)[0, 0]
     distance_to_mean = ones.T * mean - values
-    variance = (distance_to_mean.T.dot(distance_to_mean) / size)[0, 0]
-    return variance
+    variance_ = (distance_to_mean.T.dot(distance_to_mean) / size)[0, 0]
+    return variance_
 
 
 def train_regularized_regressor(array, functions=[], lambda_=0):
@@ -114,6 +114,8 @@ def find_best_lambda_cross_validation(data, functions=[]):
     best_lambda = np.linspace(extreme[0], extreme[1], nb_points)[idx]
     plt.plot(np.linspace(extreme[0], extreme[1], nb_points), mse_list)
     plt.show()
+    print('mse:', m, "\t Best lambda:", best_lambda)
+    return m, best_lambda
 
 
 def naive_bayes_train(data):

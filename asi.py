@@ -11,11 +11,11 @@ white_wine_features_target = white_wine_features_target / row_sums[np.newaxis, :
 row_sums = np.concatenate((red_wine_features_target[:, :-1].max(axis=0), [1]))
 red_wine_features_target = red_wine_features_target / row_sums[np.newaxis, :]
 
-np.random.shuffle(white_wine_features_target)
-num_entries = white_wine_features_target.shape[0]
+np.random.shuffle(red_wine_features_target)
+num_entries = red_wine_features_target.shape[0]
 
-train = white_wine_features_target[:int(num_entries * 0.7)]
-test = white_wine_features_target[int(num_entries * 0.7):]
+train = red_wine_features_target[:int(num_entries * 0.7)]
+test = red_wine_features_target[int(num_entries * 0.7):]
 
 A = train_regressor(train)
 
